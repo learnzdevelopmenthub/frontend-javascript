@@ -5,25 +5,49 @@
 
 let todos = [];
 
-let displayTodos = (todos) => {
+let displayTodos = (array) => {
   let todoList = document.getElementById("todoList");
-	todoList.innerHTML = ''
+  todoList.innerHTML = "";
 
-  todos.forEach(item => {
+  array.forEach((item) => {
     let li = document.createElement("li");
-    li.innerHTML = item;
-
+    li.innerHTML = `
+      ${item["name"]} - ${item["completed"] ? "completed" : "not completed"}
+      <button onclick="deleteTodo(${item["id"]})">Delete</button>
+    `;
     todoList.appendChild(li);
   });
 };
 
 let addTodo = () => {
   let value = document.getElementById("todoInput").value;
-  todos.push(value);
-	console.log(todos);
+
+  const todo = {
+    id: Date.now(),
+    name: value,
+    completed: false,
+  };
+
+  todos.push(todo);
   displayTodos(todos);
 };
+
+function deleteTodo(id) {
+  todos = todos.filter((item) => {
+    return item["id"] !== id;
+  });
+  displayTodos(todos);
+}
+
+function searchTodos() {
+  let searchText = document.getElementById("searchInput").value;
+
+  let filteredTodos = todos.filter((item) => item.name.includes(searchText));
+
+  displayTodos(filteredTodos);
+}
 
 displayTodos(todos);
 
 document.getElementById("addTodo").addEventListener("click", addTodo);
+document.getElementById("searchTodo").addEventListener("click", searchTodos);
