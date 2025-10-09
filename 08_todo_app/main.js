@@ -3,7 +3,7 @@
 // Delete Todo - Remove individual todo
 // Search Todos - Filter todos based on text search
 
-let todos = [];
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 let displayTodos = (array) => {
   let todoList = document.getElementById("todoList");
@@ -29,6 +29,8 @@ let addTodo = () => {
   };
 
   todos.push(todo);
+
+  localStorage.setItem('todos', JSON.stringify(todos))
   displayTodos(todos);
 };
 
@@ -36,6 +38,8 @@ function deleteTodo(id) {
   todos = todos.filter((item) => {
     return item["id"] !== id;
   });
+
+  localStorage.setItem('todos', JSON.stringify(todos))
   displayTodos(todos);
 }
 
